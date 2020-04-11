@@ -1,0 +1,9 @@
+[build]
+    command = "elm-app build"
+    functions = "functions"
+    publish = "build"
+
+[dev]
+    command = "elm-app start"
+    port = 3000
+    publish = "build"

@@ -1,86 +1,111 @@
 module App exposing (..)
 
 import Browser exposing (Document)
-import Endpoint
-import Html exposing (Html, text, h3)
-import Http
-import Json.Decode exposing (Value, list)
-import RemoteData exposing (WebData, RemoteData)
+import Browser.Navigation as Nav
+import Json.Decode exposing (Value)
 import Url exposing (Url)
-import User exposing (User(..))
-import Video exposing (Video(..))
+import Session
+import Route
+import Page.Home as Home
+import Page.Login as Login
+import Page.Videos as Videos
+-- import Page.NotFound as NotFound
+import Types exposing (..)
 
-type alias Model =
-    { videos : WebData (List Video) 
-    , user : Maybe User
+init : Maybe User -> Url -> Nav.Key -> ( Model, Cmd Msg )
+init maybeUser url navKey =
+    changeRouteTo (Route.fromUrl url)
+        (Redirect (Session.fromUser navKey maybeUser))
+
+view : Model -> Document Msg
+view model =
+    let
+        { title, body } =
+            case model of
+                Home _ ->
+                    Home.view model
+                Login _ ->
+                    Login.view model
+                Videos _ ->
+                    Videos.view model
+    in
+    { title = title
+    , body = body
     }
 
-emptyModel : Model
-emptyModel = 
-    { videos = RemoteData.NotAsked
-    , user = Nothing
-    }
+toSession : Model -> Session
+toSession model =
+    case model of
+        Home home ->
+            home.session 
+        Login login ->
+            login.session
+        Videos videos ->
+            videos.session
 
-type Msg 
-    = FetchVideos
-    | VideosReceived (WebData (List Video))
-    | ClickedVideo Video
 
-init : () -> ( Model, Cmd Msg )
-init _ =
-    -- check if url contains specific video here
-    ( emptyModel, fetchVideos )
-
-fetchVideos : Cmd Msg
-fetchVideos =
-    Http.get 
-        { url = Endpoint.videos
-        , expect = 
-            list Video.decoder
-                |> Http.expectJson (RemoteData.fromResult >> VideosReceived)
-        }
+changeRouteTo : Maybe Route -> Model -> ( Model, Cmd Msg )
+changeRouteTo maybeRoute model =
+    let
+        session =
+            toSession model
+    in
+    case maybeRoute of
+        Just HomeRoute ->
+            Home.init session
+        Just LoginRoute ->
+            Login.init session
+        Just VideosRoute ->
+            Videos.init session
+        _ ->
+            ( model, Cmd.none )
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    case msg of 
-        FetchVideos ->
-            ( model, fetchVideos )
-        VideosReceived response ->
-            ( { model | videos = response }, Cmd.none )
-        ClickedVideo target ->
+    case ( msg, model ) of
+        ( ClickedLink urlRequest, _ ) ->
+            case urlRequest of
+                Browser.Internal url ->
+                    ( model
+                    , Nav.pushUrl (Session.navKey (toSession model)) (Url.toString url)
+                    )
+                Browser.External href ->
+                    ( model
+                    , Nav.load href
+                    )
+        ( ChangedUrl url, _ ) ->
+            changeRouteTo (Route.fromUrl url) model
+        ( GotLoginMsg subMsg, Login login ) ->
+            Login.update subMsg login
+        ( GotHomeMsg subMsg, Home home ) ->
+            Home.update subMsg home
+        ( GotVideosMsg subMsg, Videos videos ) ->
+            Videos.update subMsg videos
+        ( GotSession session, Redirect _ ) ->
+            ( Redirect session
+            , Route.replaceUrl (Session.navKey session) HomeRoute
+            )
+        ( _, _ ) ->
+            -- Disregard messages that arrived for the wrong page.
             ( model, Cmd.none )
 
-view : Model -> Html Msg 
-view model =
-    case model.videos of 
-        RemoteData.NotAsked ->
-            text ""
-        RemoteData.Loading ->
-            h3 [] [ text "Loading..." ]
-        RemoteData.Success videos ->
-            text ("Videos received = " ++ String.fromInt (List.length videos))
-        RemoteData.Failure httpError ->
-            text (buildErrorMessage httpError)
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    case model of
+        Home home ->
+            Sub.map GotHomeMsg (HomeMsg (Home.subscriptions home))
+        Login login ->
+            Sub.map GotLoginMsg (Login.subscriptions login)
+        Videos videos ->
+            Sub.map GotVideosMsg (Videos.subscriptions videos)
 
-buildErrorMessage : Http.Error -> String
-buildErrorMessage httpError =
-    case httpError of
-        Http.BadUrl message ->
-            message
-        Http.Timeout ->
-            "Server is taking too long to respond. Please try again later."
-        Http.NetworkError ->
-            "Unable to reach server."
-        Http.BadStatus statusCode ->
-            "Request failed with status code: " ++ String.fromInt statusCode
-        Http.BadBody message ->
-            message
-
-main : Program () Model Msg
+main : Program Value Model Msg
 main =
-    Browser.element
+    Browser.application
         { init = init
+        , onUrlChange = ChangedUrl
+        , onUrlRequest = ClickedLink
         , view = view
         , update = update
-        , subscriptions = \_ -> Sub.none
+        , subscriptions = subscriptions
         }

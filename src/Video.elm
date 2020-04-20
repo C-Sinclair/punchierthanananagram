@@ -3,16 +3,7 @@ module Video exposing (..)
 import Html exposing (Html)
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Pipeline exposing (custom, required)
-import User exposing (User(..))
-import Generic exposing (..)
-
-type Video
-    = Video Internals
-
-type alias Internals = 
-    { id : ID 
-    , title : String
-    }
+import Types exposing (..)
 
 title : Video -> String
 title (Video internals) =
@@ -27,9 +18,9 @@ decoder =
     Decode.succeed Video
         |> custom internalsDecoder
 
-internalsDecoder : Decoder Internals
+internalsDecoder : Decoder VideoInternals
 internalsDecoder =
-    Decode.succeed Internals
+    Decode.succeed VideoInternals
         |> required "id" Decode.string
         |> required "title" Decode.string
 

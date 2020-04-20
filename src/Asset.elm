@@ -2,9 +2,7 @@ module Asset exposing (..)
 
 import Html exposing (Attribute)
 import Html.Attributes as Attr
-
-type Image 
-    = Image String
+import Types exposing (..)
 
 error : Image
 error =

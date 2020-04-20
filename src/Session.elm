@@ -1,11 +1,8 @@
-module Session exposing (Session(..), init, user, token, navKey, changes, fromUser)
+module Session exposing (init, user, token, navKey, changes, fromUser)
 
-import User exposing (User(..))
 import Browser.Navigation as Nav
-
-type Session
-    = LoggedIn Nav.Key User
-    | Guest Nav.Key
+import User
+import Types exposing (..)
 
 init : Maybe User -> Nav.Key -> Session
 init maybeUser key =
@@ -36,7 +33,6 @@ navKey session =
     case session of
         LoggedIn key _ ->
             key
-
         Guest key ->
             key
 
@@ -52,6 +48,5 @@ fromUser key maybeViewer =
     case maybeViewer of
         Just viewerVal ->
             LoggedIn key viewerVal
-
         Nothing ->
             Guest key

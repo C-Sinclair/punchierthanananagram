@@ -6,14 +6,14 @@ import Json.Decode exposing (Value)
 import Browser exposing (Document)
 import Browser.Navigation as Nav
 import Url exposing (Url)
-import User exposing (User(..))
-import Session as Session exposing (Session(..))
+import User
+import Session
 import Page.Home as Home
 import Page.NotFound as NotFound
 import Page.Login as Login
 import Page.Video as Video
 import Generic exposing (..)
-import Route exposing (Route(..))
+import Route
 
 type Model
     = Home Home.Model

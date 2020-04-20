@@ -1,22 +1,19 @@
-module Route exposing (Route(..), href, fromUrl, replaceUrl)
+module Route exposing (href, fromUrl, replaceUrl)
 
 import Html exposing (Attribute)
 import Html.Attributes as Attr
 import Browser.Navigation as Nav
 import Url exposing (Url)
 import Url.Parser as Parser exposing ((</>), Parser, oneOf, s, string)
-
-type Route 
-    = Home
-    | Login
-    | Video String
+import Types exposing (..)
 
 parser : Parser (Route -> a) a
 parser =
     oneOf 
-        [ Parser.map Home Parser.top 
-        , Parser.map Login (s "login")
-        , Parser.map Video (s "video" </> string)
+        [ Parser.map HomeRoute Parser.top 
+        , Parser.map LoginRoute (s "login")
+        , Parser.map VideosRoute (s "videos")
+        -- , Parser.map Video (s "videos" </> string)
         ]
 
 href : Route -> Attribute msg 
@@ -43,9 +40,13 @@ routeToString page =
 routeToPieces : Route -> List String
 routeToPieces page =
     case page of 
-        Home -> 
+        Redirect _ -> 
             []
-        Login -> 
+        HomeRoute -> 
+            []
+        LoginRoute -> 
             ["login"]
-        Video id ->
-            ["videos", id]
+        VideosRoute ->
+            ["videos"]
+        -- Video id ->
+        --     ["videos", id]

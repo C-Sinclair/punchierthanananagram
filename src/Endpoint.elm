@@ -1,7 +1,7 @@
 module Endpoint exposing (Endpoint(..), login, video, videos)
 
 import Url.Builder exposing (QueryParameter)
-import Generic exposing (..)
+import Types exposing (..)
 
 type Endpoint
     = Endpoint String

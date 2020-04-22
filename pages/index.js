@@ -1,6 +1,9 @@
 import Head from 'next/head'
+import fetch from 'isomorphic-unfetch'
+import '../public/mvp.css'
 
-export default function Home() {
+const Home = ({ videos }) => {
+
   return (
     <div className="container">
       <Head>
@@ -9,20 +12,22 @@ export default function Home() {
       </Head>
 
       <main>
-        <h1 className="title">
-          Hi Joe
-        </h1>
+        { videos.map((video, index) => (
+          <div key={index}>{video}</div>
+        ))}
       </main>
 
       <footer>
-        <a
-          href="https://zeit.co?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by <img src="/zeit.svg" alt="ZEIT Logo" />
-        </a>
+        <p>Hi Joe</p>
       </footer>
     </div>
   )
 }
+
+Home.getInitialProps = async ctx => {
+  const res = await fetch(`/api/videos`)
+  const json = await res.json()
+  return { videos: json }
+}
+
+export default Home

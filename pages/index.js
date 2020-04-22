@@ -1,13 +1,13 @@
 import Head from 'next/head'
 import fetch from 'isomorphic-unfetch'
-import '../public/mvp.css'
 
 const Home = ({ videos }) => {
-
+  
   return (
     <div className="container">
       <Head>
         <title>PunchierThanAnAnagram</title>
+        <link rel="stylesheet" href="/mvp.css" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

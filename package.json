@@ -3,14 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev:ui": "now dev",
+    "dev:functions": "firebase functions:shell",
+    "dev": "concurrently \"yarn dev:ui\" \"yarn dev:functions\" ",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "deploy:functions": "firebase deploy --only functions",
+    "deploy:ui": "now --prod",
+    "deploy": "concurrently \"yarn deploy:ui\" \"yarn deploy:functions\" "
   },
   "dependencies": {
-    "isomorphic-unfetch": "^3.0.0",
     "next": "9.3.5",
+    "node-fetch": "^2.6.0",
     "react": "16.13.1",
     "react-dom": "16.13.1"
+  },
+  "devDependencies": {
+    "concurrently": "^5.1.0"
   }
 }

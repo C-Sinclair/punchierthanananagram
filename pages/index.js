@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import fetch from 'isomorphic-unfetch'
+import fetch from 'node-fetch'
 
 const Home = ({ videos }) => {
   
@@ -24,10 +24,14 @@ const Home = ({ videos }) => {
   )
 }
 
-Home.getInitialProps = async ctx => {
-  const res = await fetch(`/api/videos`)
+export const getStaticProps = async () => {
+  const res = await fetch('/api/videos')
   const json = await res.json()
-  return { videos: json }
+  return { 
+    props: {
+      videos: json 
+    }
+  }
 }
 
 export default Home

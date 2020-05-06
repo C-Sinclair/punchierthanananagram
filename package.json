@@ -9,7 +9,7 @@
     "build": "next build",
     "start": "next start",
     "deploy:functions": "firebase deploy --only functions",
-    "deploy:ui": "now --prod",
+    "deploy:ui": "firebase deploy --only hosting",
     "deploy": "concurrently \"yarn deploy:ui\" \"yarn deploy:functions\" "
   },
   "dependencies": {

@@ -1,32 +1,23 @@
 {
-  "name": "punchierthanananagram",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev:ui": "now dev",
-    "dev:functions": "firebase functions:shell",
-    "dev": "concurrently \"yarn dev:ui\" \"yarn dev:functions\" ",
-    "build": "next build",
-    "start": "next start",
-    "deploy:functions": "firebase deploy --only functions",
-    "deploy:ui": "firebase deploy --only hosting",
-    "deploy": "concurrently \"yarn deploy:ui\" \"yarn deploy:functions\" "
-  },
-  "dependencies": {
-    "@zeit/next-css": "^1.0.1",
-    "cookie-session": "^1.4.0",
-    "dotenv": "^8.2.0",
-    "firebase": "^7.14.1",
-    "firebase-admin": "^8.11.0",
-    "isomorphic-unfetch": "^3.0.0",
-    "next": "9.3.5",
-    "node-fetch": "^2.6.0",
-    "react": "16.13.1",
-    "react-dom": "16.13.1"
-  },
-  "devDependencies": {
-    "@types/react": "^16.9.34",
-    "concurrently": "^5.1.0",
-    "typescript": "^3.8.3"
-  }
+	"name": "punchierthanananagram",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "svelte-kit dev",
+		"build": "svelte-kit build",
+		"start": "svelte-kit start"
+	},
+	"devDependencies": {
+		"@sveltejs/adapter-node": "next",
+		"@sveltejs/kit": "next",
+		"sass": "^1.32.8",
+		"svelte": "^3.29.0",
+		"svelte-preprocess": "^4.0.0",
+		"tslib": "^2.0.0",
+		"typescript": "^4.0.0",
+		"vite": "^2.1.0"
+	},
+	"type": "module",
+	"engines": {
+		"node": ">= 12.17.0"
+	}
 }

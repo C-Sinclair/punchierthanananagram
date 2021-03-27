@@ -1,5 +1,5 @@
 <script lang="ts">
-	let count: number = 0;
+	let count: number = Math.floor(Math.random() * 4000);
 
 	const increment = () => {
 		count += 1;
@@ -18,7 +18,8 @@
     @include btn.button-border;
     position: absolute;
     right: 2em;
-    top: -10px;
+    top: -20px;
+    padding: 1em 2em;
 	}
 
 	button:hover {

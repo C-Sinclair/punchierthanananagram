@@ -5,7 +5,7 @@ const pkg = require("./package.json");
 module.exports = {
   preprocess: sveltePreprocess(),
   kit: {
-    adapter: require("@sveltejs/adapter-netlify")(),
+    adapter: require("@sveltejs/adapter-static")(),
     target: "#svelte",
     vite: {
       ssr: {

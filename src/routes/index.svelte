@@ -1,5 +1,5 @@
 <script lang="ts">
-  import PageTitle from '$lib/PageTitle/svelte'
+  import PageTitle from '$lib/PageTitle.svelte'
 
 </script>
 

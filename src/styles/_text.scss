@@ -1,0 +1,5 @@
+@mixin title($size: 3em) {
+    font-family: var(--font-fun);
+    color: white;
+    font-size: $size;
+}

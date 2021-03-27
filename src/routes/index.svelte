@@ -1,50 +1,30 @@
 <script lang="ts">
-	import Counter from '$lib/Counter.svelte';
+  import PageTitle from '$lib/PageTitle/svelte'
+
 </script>
 
-<main>
-	<h1>Hello world!</h1>
+<svelte:head>
+  <title>PunchierThanAnAnagram</title>
+</svelte:head>
 
-	<Counter />
+<PageTitle>Punchier Than An Anagram</PageTitle>
 
-	<p>Visit <a href="https://svelte.dev">svelte.dev</a> to learn how to build Svelte apps.</p>
-</main>
+<p>A comedy duo of epic proportions</p>
+
+<div>
+  <h2>You've probably heard of their hilarious projects, here's some notable highlights</h2>
+  <ul>
+    <li>
+      <a href='/bibblin'>Bibblin</a>
+    </li>
+  </ul>
+</div>
 
 <style lang="scss">
-	:root {
-		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
-			'Open Sans', 'Helvetica Neue', sans-serif;
-	}
+  @use "../styles/text" as text;
 
-	main {
-		text-align: center;
-		padding: 1em;
-		margin: 0 auto;
-	}
-
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4rem;
-		font-weight: 100;
-		line-height: 1.1;
-		margin: 4rem auto;
-		max-width: 14rem;
-	}
-
-	p {
-		max-width: 14rem;
-		margin: 2rem auto;
-		line-height: 1.35;
-	}
-
-	@media (min-width: 480px) {
-		h1 {
-			max-width: none;
-		}
-
-		p {
-			max-width: none;
-		}
-	}
+  h1 {
+    @include text.title(3.5em);
+    text-decoration: underline;
+  }
 </style>

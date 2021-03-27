@@ -1,0 +1,7 @@
+@mixin button-border($colour: var(--palette-10)) {
+  outline: none;
+  border: 2px solid $colour;
+  border-radius: 2em;
+
+  @content;
+}

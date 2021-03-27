@@ -1,0 +1,11 @@
+@use "sass:list";
+
+$palette: #7400B8, #6930C3, #5E60CE, #5390D9, #4EA8DE, #48BFE3, #56CFE1, #64DFDF, #72EFDD, #80FFDB;
+
+:root {
+  @each $colour in $palette {
+    $index: list.index($palette, $colour);
+    --palette-#{$index}: #{$colour};
+  }
+}
+
